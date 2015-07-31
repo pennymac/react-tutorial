@@ -5,7 +5,7 @@ var providePlugin = new webpack.ProvidePlugin({
 });
 
 module.exports = {
-    context: './build',
+    context: './src',
 
     entry: './app.js',
 
@@ -34,8 +34,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [__dirname + '/src'],
-                // loader: 'react-hot'
-                loaders: ['react-hot', 'babel-loader'] // We might need this instead?
+                loaders: ['jsx-loader', 'react-hot', 'babel-loader']
             }
         ]
     }

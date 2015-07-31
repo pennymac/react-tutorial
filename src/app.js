@@ -1,8 +1,6 @@
 var React = require('react');
 
 React.render(
-    <div className="hello">
-        <p>Hello World</p>
-    </div>,
+    <p>Hello World</p>,
     document.getElementById("main")
 );
