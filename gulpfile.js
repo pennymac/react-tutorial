@@ -40,21 +40,19 @@ gulp.task('webpack', function(callback) {
     var config = require('./webpack.config.js');
     var compiler = webpack(config);
 
-    if (isWatching) {
-        compiler.watch({
-            aggregateTimeout: 200
-        }, function(err, stats) {
-            if (err) {
-                throw new plugins.util.PluginError('webpack', err);
-            }
+    compiler.watch({
+        aggregateTimeout: 200
+    }, function(err, stats) {
+        if (err) {
+            throw new plugins.util.PluginError('webpack', err);
+        }
 
-            console.log(stats.toString({
-                colors: plugins.util.colors.supportsColor,
-            }));
+        plugins.util.log('[webpack]', stats.toString({
+            colors: plugins.util.colors.supportsColor,
+        }));
 
-            callback();
-        });
-    }
+        callback();
+    });
 });
 
 gulp.task('build', ['babel', 'html']);
@@ -66,13 +64,15 @@ gulp.task('watch', ['build'], function() {
     gulp.watch('src/index.html', ['html']);
 });
 
-
 gulp.task('webpack-dev-server', function(callback) {
     var config = require('./webpack.config.js');
     var compiler = webpack(config);
 
-    new WebpackDevServer(compiler, {
-    }).listen(8080, 'localhost', function(err) {
+    var server = new WebpackDevServer(compiler, {
+
+    });
+    
+    server.listen(8080, 'localhost', function(err) {
         if (err) throw new plugins.util.PluginError('webpack-dev-server', err);
         
         plugins.util.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
@@ -80,13 +80,11 @@ gulp.task('webpack-dev-server', function(callback) {
     });
 });
 
-gulp.task('serve', ['webpack-dev-server'], function(callback) {
-    isWatching = true;
+gulp.task('serve', ['webpack', 'webpack-dev-server'], function(callback) {
     gulp.src('build')
         .pipe(plugins.webserver({
-            livereload: true
+            // livereload: true
         }));
-    runSequence('watch', 'webpack', callback);
 });
 
 /**

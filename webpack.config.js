@@ -34,8 +34,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [__dirname + '/src'],
-                loader: 'react-hot'
-                // loaders: ['react-hot', 'babel-loader'] // We might need this instead?
+                // loader: 'react-hot'
+                loaders: ['react-hot', 'babel-loader'] // We might need this instead?
             }
         ]
     }
