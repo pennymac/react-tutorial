@@ -1,21 +1,23 @@
 var webpack = require('webpack');
+var path = require('path');
 
-var providePlugin = new webpack.ProvidePlugin({
-    React: 'react'
-});
 
 module.exports = {
-    context: './src',
+    context: path.join(__dirname, 'src'),
 
-    entry: './app.js',
+    entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        './app.js',
+    ],
 
     output: {
-        path: __dirname + '/build',
+        path: path.join(__dirname, 'build'),
 
         filename: 'app.js'
     },
 
-    devtool: 'eval-source-map',
+    devtool: 'eval',
 
     preLoaders: [
         {
@@ -25,16 +27,28 @@ module.exports = {
         }
     ],
 
-    // plugins: [
-    //     providePlugin
-    // ],
+    plugins: [
+        new webpack.ProvidePlugin({
+            React: 'react'
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+    ],
 
     module: {
         loaders: [
             {
-                test: /\.js$/,
-                include: [__dirname + '/src'],
-                loaders: ['jsx-loader', 'react-hot', 'babel-loader']
+                test: /\.jsx?$/,
+
+                include: [
+                    path.join(__dirname, 'src')
+                ],
+
+                loaders: [
+                    'react-hot',
+                    'jsx',
+                    'babel'
+                ]
             }
         ]
     }
