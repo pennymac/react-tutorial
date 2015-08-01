@@ -2,25 +2,14 @@ var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var plugins = gulpLoadPlugins();
 
+var del = require('del');
 var runSequence = require('run-sequence');
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config.js');
 
-/**
- * html
- *
- * Copies and pastes the index.html file in the build folder
- */
-gulp.task('html', function() {
-    return gulp.src('src/index.html')
-        .pipe(gulp.dest('build'));
-});
-
-gulp.task('babel', function() {
-    return gulp.src('src/*.js')
-        .pipe(plugins.babel({ modules: 'umd' }))
-        .pipe(gulp.dest('build'));
+gulp.task('clean', function() {
+    del(['build']);
 });
 
 /**
@@ -28,8 +17,9 @@ gulp.task('babel', function() {
  *
  * Compiles JS assets to be able to be used in the browser
  */
-gulp.task('webpack', function(callback) {
+gulp.task('webpack', function() {
     var compiler = webpack(config);
+    var compilerRunCount = 0;
 
     compiler.watch({
         aggregateTimeout: 200
@@ -42,11 +32,9 @@ gulp.task('webpack', function(callback) {
             colors: plugins.util.colors.supportsColor,
         }));
 
-        callback();
+        plugins.util.log('[webpack]', "Compiler run count: " + ++compilerRunCount);
     });
 });
-
-gulp.task('build', ['html']);
 
 gulp.task('webpack-dev-server', function(callback) {
     var compiler = webpack(config);
@@ -63,11 +51,6 @@ gulp.task('webpack-dev-server', function(callback) {
     });
 });
 
-gulp.task('serve', ['html', 'webpack', 'webpack-dev-server']);
+gulp.task('serve', ['default']);
 
-/**
- * default
- *
- * Runs babel and html tasks concurrently
- */
-gulp.task('default', ['babel', 'html']);
+gulp.task('default', ['webpack', 'webpack-dev-server']);

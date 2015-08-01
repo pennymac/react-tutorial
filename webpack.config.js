@@ -3,7 +3,7 @@ var path = require('path');
 
 
 module.exports = {
-    context: path.join(__dirname, 'src'),
+    context: path.join(__dirname, 'scripts'),
 
     entry: [
         'webpack-dev-server/client?http://localhost:3000',
@@ -12,6 +12,9 @@ module.exports = {
     ],
 
     output: {
+        /**
+         * The output directory
+         */
         path: path.join(__dirname, 'build'),
 
         filename: 'app.js'
@@ -22,7 +25,7 @@ module.exports = {
     preLoaders: [
         {
             test: /\.js$/,
-            include: [__dirname + '/src'],
+            include: [path.join(__dirname, 'scripts')],
             loader: 'source-map-loader'
         }
     ],
@@ -41,7 +44,7 @@ module.exports = {
                 test: /\.jsx?$/,
 
                 include: [
-                    path.join(__dirname, 'src')
+                    path.join(__dirname, 'scripts')
                 ],
 
                 loaders: [
@@ -49,6 +52,11 @@ module.exports = {
                     'jsx',
                     'babel'
                 ]
+            },
+            {
+                test: /\.sass$/,
+
+                loader: 'style!css!sass?indentedSyntax'
             }
         ]
     }
