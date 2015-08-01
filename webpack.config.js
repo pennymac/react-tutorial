@@ -1,9 +1,9 @@
 var webpack = require('webpack');
 var path = require('path');
-
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    context: path.join(__dirname, 'scripts'),
+    context: path.join(__dirname, 'src'),
 
     entry: [
         'webpack-dev-server/client?http://localhost:3000',
@@ -35,7 +35,8 @@ module.exports = {
             React: 'react'
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin('styles.css')
     ],
 
     module: {
@@ -44,7 +45,7 @@ module.exports = {
                 test: /\.jsx?$/,
 
                 include: [
-                    path.join(__dirname, 'scripts')
+                    path.join(__dirname, 'src')
                 ],
 
                 loaders: [
@@ -54,9 +55,13 @@ module.exports = {
                 ]
             },
             {
-                test: /\.sass$/,
+                test: /\.css/,
 
-                loader: 'style!css!sass?indentedSyntax'
+                include: [
+                    path.join(__dirname, 'src')
+                ],
+
+                loader: ExtractTextPlugin.extract('style', 'css')
             }
         ]
     }

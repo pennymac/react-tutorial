@@ -1,8 +1,16 @@
 var React = require('react');
 
+var styles = {
+    fridge: {
+        background: '#333',
+        color: '#fff',
+        padding: '20px'
+    }
+};
+
 var Fridge = React.createClass({
     render: function() {
-        return <div> I am a fridge. My name is { this.props.name }</div>;
+        return <div style={ styles.fridge }> I am a fridge. My name is { this.props.name }</div>;
     }
 });
 
