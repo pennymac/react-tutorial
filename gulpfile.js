@@ -46,11 +46,13 @@ gulp.task('webpack-dev-server', function(callback) {
     server.listen(3000, 'localhost', function(err) {
         if (err) throw new plugins.util.PluginError('webpack-dev-server', err);
         
-        plugins.util.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
+        plugins.util.log('[webpack-dev-server]', 'http://localhost:3000/webpack-dev-server/index.html');
         callback();
     });
 });
 
 gulp.task('serve', ['default']);
 
-gulp.task('default', ['webpack', 'webpack-dev-server']);
+gulp.task('default', function() {
+    runSequence('clean', ['webpack', 'webpack-dev-server'])
+});
