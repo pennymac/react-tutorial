@@ -31,9 +31,6 @@ module.exports = {
     ],
 
     plugins: [
-        new webpack.ProvidePlugin({
-            React: 'react'
-        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new ExtractTextPlugin('styles.css')
@@ -55,13 +52,14 @@ module.exports = {
                 ]
             },
             {
-                test: /\.css/,
+                test: /\.css$/,
 
                 include: [
                     path.join(__dirname, 'src')
                 ],
 
-                loader: ExtractTextPlugin.extract('style', 'css')
+                // loaders: ['style', 'css']
+		loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             }
         ]
     }
