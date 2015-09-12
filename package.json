@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Daniel Dyba, Peter Moresi",
   "license": "ISC",
   "repository": "http://code.pnmac.com/",
   "devDependencies": {

@@ -25,7 +25,7 @@ class FileStore extends EventEmitter {
 
         var _file = {
           name: file.name,
-          data: [[]]
+          data: []
         };
 
         _state.files.push(_file);
