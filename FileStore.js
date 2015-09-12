@@ -1,6 +1,7 @@
 var EventEmitter = require('events');
 var Papa = require('papaparse');
 var Dispatcher = require('./Dispatcher');
+var {csv} = require('d3-dsv');
 
 let _instance,
     _state = { files: [] };
@@ -33,17 +34,20 @@ class FileStore extends EventEmitter {
 
         var self = this;
 
-        Papa.parse(file, {
-          complete: function(results) {
-            if (results.errors.length > 0) {
-              ActionCreator.error(results.errors);
-            } else {
-              _file.data = results.data;
-              console.log(_file)
-              self.emit('change');
-            }
-          }
-        });
+        var r = new FileReader();
+
+        r.onload = function(e) {
+            _file.data  = csv.parseRows(e.target.result, (d, i) => {
+              if (i > 500) { return undefined; }
+              return d;
+            });
+
+            console.log(_file)
+            self.emit('change');
+        };
+
+        r.readAsText(file);
+
         break;
       }
     });
