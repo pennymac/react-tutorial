@@ -7,7 +7,7 @@ var ActionCreator = require('./ActionCreator');
 
 var {Table, Column} = require('react-partial-table');
 
-var styles = require('./MyComponent.css');
+var styles = require('./CSVFileViewer.css');
 
 var MyComponent = React.createClass({
 
