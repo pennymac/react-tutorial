@@ -1,5 +1,4 @@
 var EventEmitter = require('events');
-var Papa = require('papaparse');
 var Dispatcher = require('./Dispatcher');
 var {csv} = require('d3-dsv');
 

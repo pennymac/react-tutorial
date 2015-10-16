@@ -4,7 +4,8 @@
   "description": "A simple React tutorial",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "rwb serve",
+    "test": "node test"
   },
   "author": "Daniel Dyba, Peter Moresi",
   "license": "ISC",
@@ -18,7 +19,8 @@
     "flux": "^2.0.3",
     "react": "^0.13.3",
     "react-dropzone": "^1.3.0",
-    "react-partial-table": "^2.0.0"
+    "react-partial-table": "^3.0.0",
+    "rwb": "0.0.15"
   },
   "keywords": [
     "react"
