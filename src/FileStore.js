@@ -1,44 +1,46 @@
-var EventEmitter = require('fbemitter').EventEmitter;
-var Constants = require('./AppConstants');
-var AppDispatcher = require('./AppDispatcher');
-var Papa = require('papaparse');
-var assign = require('object-assign');
+import Dispatcher from './Dispatcher';
+import {MapStore} from 'flux/utils';
 
-var PARSE_COMPLETE = 'parse_complete';
-var PARSE_ERROR = 'parse_error';
+// the private singleton instance
+let _instance;
 
-var FileStore = assign(EventEmitter.prototype, new EventEmitter(), {
-    parse: function(file, complete) {
-	Papa.parse(file, {
-	    complete: complete
-	});
-    },
+class FileStore extends MapStore {
 
-    addParseListener: function(callback) {
-	this.addListener(PARSE_COMPLETE, callback);
-    },
+  constructor() {
+    super(Dispatcher);
+  }
 
-    onParseComplete: function(results) {
-	if (results.errors.length > 0) {
-	    this.emit(PARSE_ERROR, results.errors);
-	} else {
-	    this.emit(PARSE_COMPLETE, results.data);
-	}
+  reduce(state, action) {
+    var file = action.file;
+
+    switch (action.type) {
+      case 'LOAD_FILE':
+
+        switch (file.type) {
+          case "text/csv":
+            break;
+          default:
+            ActionCreator.error("Couldn't recognize the file type");
+            return;
+        }
+
+        return state.set( file.name, file);
+      case 'LOAD_FILE_DATA':
+        return state.set( file.name + '-data', action.data);
+      default:
+        return state;
     }
-});
+  }
 
-AppDispatcher.register(function(action) {
-    console.log("The action is: " + action.actionType);
-    
-    switch (action.actionType) {
-	case Constants.PARSE_FILE:
-	    FileStore.parse(action.file, function(results) {
-		FileStore.onParseComplete(results);
-	    });
-	    break;
-	default:
-	    break;
-    }
-});
+  getFiles() {
+    return this.getState().toArray() 
+  }
 
-module.exports = FileStore;
+  getFileData(name) {
+    return this.getState().get( name + '-data');
+  }
+
+}
+
+_instance = new FileStore();
+export default _instance;
