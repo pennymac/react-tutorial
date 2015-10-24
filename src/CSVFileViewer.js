@@ -5,8 +5,9 @@ import FileStore from './FileStore';
 import Dropzone from 'react-dropzone';
 import ActionCreator from './ActionCreator';
 import {tsv} from 'd3-dsv';
+import {MaxRows} from './Constants';
 
-import {Table, Column} from 'react-partial-table';
+import {Table, Column} from 'fixed-data-table';
 
 import styles from './CSVFileViewer.css';
 
@@ -15,9 +16,11 @@ export default class CSVFileViewer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
+      mode: 1
     }
     this.onStoreChanged = this.onStoreChanged.bind(this);
+    this.handleClickChangeMode = this.handleClickChangeMode.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +43,13 @@ export default class CSVFileViewer extends Component {
     });
   }
 
+  handleClickChangeMode() {
+    this.setState( { mode: this.state.mode === 0 ? 1 : 0 } );
+  }
+
   render() {
+
+    var self = this;
 
     function _d(n) {
       return (FileStore.getFileData(n) || []);
@@ -48,18 +57,18 @@ export default class CSVFileViewer extends Component {
 
     function makeTable(file) {
 
-      return <pre>{tsv.format(_d(file.name))}</pre>;
+      if (self.state.mode === 0) {
+        return <pre>{tsv.format(_d(file.name))}</pre>;
+      }
       
       return (
-        <Table
-                className={ styles.fullScreenTable }
-                fixedHeader={true}
-                startRow={2}
-                numberOfRows={_d(file.name).length > 500 ? 500 : _d(file.name).length}
-                showHeader={true}
-                getRowAt={ (rowIndex) => _d(file.name)[rowIndex] }
-                headerRenderers={_d(file.name)[0]}
-                columnRenderers={Object.keys(_d(file.name)[0])}>
+        <Table rowHeight={50}
+               headerHeight={50}
+               width="1024"
+               height={400}
+               rowsCount={MaxRows}
+               rowGetter={ (rowIndex) => _d(file.name)[rowIndex] }>
+          { Object.keys(_d(file.name)[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) } 
         </Table>
       );
     }
@@ -68,9 +77,12 @@ export default class CSVFileViewer extends Component {
       <div className={ styles.main }>
         <h1>CSV File Viewer</h1>
         <Dropzone onDrop={ this.onDrop }
-                  className={ this.state.files.length > 0 ? styles.hidden : styles.dropZone}>
+                  className={ styles.dropZone }>
           Drop files or click here
         </Dropzone>
+        <label>
+          <input onChange={this.handleClickChangeMode} type="checkbox" />Show Text
+        </label>
         {this.state.files.filter((d) => d.name).map((file) =>
           <div key={file.name}>
            <h2>{file.name}</h2>

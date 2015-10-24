@@ -13,7 +13,7 @@ export default class {
     var self = this;
 
     r.onload = function(e) {
-      self.loadFileData( file, csv.parseRows(e.target.result, (d, i) => {
+      self.loadFileData( file, csv.parse(e.target.result, (d, i) => {
         if (i > MaxRows) { return undefined; }
         return d;
       }));
