@@ -15,11 +15,10 @@
   background-color: white;
 }
 
-.dropZone {
-  position: absolute;
+.dropzone {
   border: 1px #CCC dotted;
   text-align: center;
-  width: 40%;
+  width: 400px;
   left: 25%;
   padding: 5%;
 }
