@@ -1,4 +1,4 @@
-import Dispatcher from './Dispatcher';
+import Dispatcher from './AppDispatcher';
 import {MaxRows} from './Constants';
 import {csv} from 'd3-dsv';
 

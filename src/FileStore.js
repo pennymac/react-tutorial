@@ -1,4 +1,4 @@
-import Dispatcher from './Dispatcher';
+import Dispatcher from './AppDispatcher';
 import {MapStore} from 'flux/utils';
 
 // the private singleton instance
