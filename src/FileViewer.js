@@ -2,14 +2,11 @@
 
 import React, {Component}  from 'react';
 import FileStore from './FileStore';
-import Dropzone from 'react-dropzone';
 import ActionCreator from './ActionCreator';
 import {tsv} from 'd3-dsv';
 import {MaxRows} from './Constants';
-
 import {Table, Column} from 'fixed-data-table';
-
-import styles from './CSVFileViewer.css';
+import styles from './app.css';
 
 export default class CSVFileViewer extends Component {
 
@@ -37,11 +34,7 @@ export default class CSVFileViewer extends Component {
     })
   }
 
-  onDrop(files) {
-    files.forEach((file) => {
-      ActionCreator.loadFile(file);
-    });
-  }
+
 
   handleClickChangeMode() {
     this.setState( { mode: this.state.mode === 0 ? 1 : 0 } );
@@ -60,7 +53,7 @@ export default class CSVFileViewer extends Component {
       if (self.state.mode === 0) {
         return <pre>{tsv.format(_d(file.name))}</pre>;
       }
-      
+
       return (
         <Table rowHeight={50}
                headerHeight={50}
@@ -68,18 +61,13 @@ export default class CSVFileViewer extends Component {
                height={400}
                rowsCount={MaxRows}
                rowGetter={ (rowIndex) => _d(file.name)[rowIndex] }>
-          { Object.keys(_d(file.name)[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) } 
+          { Object.keys(_d(file.name)[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) }
         </Table>
       );
     }
 
     return (
       <div className={ styles.main }>
-        <h1>CSV File Viewer</h1>
-        <Dropzone onDrop={ this.onDrop }
-                  className={ styles.dropZone }>
-          Drop files or click here
-        </Dropzone>
         <label>
           <input onChange={this.handleClickChangeMode} type="checkbox" />Show Text
         </label>
