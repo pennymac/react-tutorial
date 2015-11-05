@@ -1,9 +1,7 @@
 import Dispatcher from './AppDispatcher';
 import {MapStore} from 'flux/utils';
-import { LOAD_DATA, LOAD_FILE } from './ActionTypes'
-
-// the private singleton instance
-let _instance;
+import { LOAD_FILE_DATA, LOAD_FILE } from './ActionTypes'
+import {csv} from 'd3-dsv';
 
 class FileStore extends MapStore {
 
@@ -16,20 +14,14 @@ class FileStore extends MapStore {
 
     switch (action.type) {
       case LOAD_FILE:
-
-        switch (file.type) {
-          case "text/csv":
-            break;
-          default:
-            ActionCreator.error("Couldn't recognize the file type");
-            return;
-        }
-
-        return state.set( file.name, file);
-      case LOAD_DATA:
+      return state.set( file.name, file);
+      case LOAD_FILE_DATA:
+      switch (file.type) {
+        case 'text/csv':
+        return state.set( file.name + '-data', csv.parse(action.data) );
+        default:
         return state.set( file.name + '-data', action.data);
-      default:
-        return state;
+      }
     }
   }
 
@@ -43,5 +35,4 @@ class FileStore extends MapStore {
 
 }
 
-_instance = new FileStore();
-export default _instance;
+export default new FileStore()

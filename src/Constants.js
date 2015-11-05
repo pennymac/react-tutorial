@@ -1,1 +1,1 @@
-export let MaxRows = 50
+export let MaxRows = 500000 

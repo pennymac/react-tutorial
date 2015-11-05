@@ -8,7 +8,7 @@ import {MaxRows} from './Constants';
 import {Table, Column} from 'fixed-data-table';
 import styles from './app.css';
 
-export default class CSVFileViewer extends Component {
+export default class FileViewer extends Component {
 
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ export default class CSVFileViewer extends Component {
                headerHeight={50}
                width="1024"
                height={400}
-               rowsCount={MaxRows}
+               rowsCount={MaxRows < FileStore.getFileData(file.name).length ? MaxRows : FileStore.getFileData(file.name).length }
                rowGetter={ (rowIndex) => _d(file.name)[rowIndex] }>
           { Object.keys(_d(file.name)[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) }
         </Table>

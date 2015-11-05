@@ -9,6 +9,14 @@ export class App extends Component {
   onDrop(files) {
     files.forEach((file) => {
       ActionCreator.loadFile(file);
+
+      var r = new FileReader();
+
+      r.onload = function(e) {
+        ActionCreator.loadFileData( file, e.target.result);
+      };
+
+      r.readAsText(file);
     });
   }
 
