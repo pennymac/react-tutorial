@@ -1,11 +1,12 @@
 import Dispatcher from './AppDispatcher';
 import {MaxRows} from './Constants';
 import {csv} from 'd3-dsv';
+import { LOAD_DATA, LOAD_FILE } from './ActionTypes'
 
 export default class {
   static loadFile(file) {
     Dispatcher.dispatch({
-      type: 'LOAD_FILE',
+      type: LOAD_FILE,
       file: file
     });
 
@@ -25,7 +26,7 @@ export default class {
 
   static loadFileData(file, data) {
     Dispatcher.dispatch({
-      type: 'LOAD_FILE_DATA',
+      type: LOAD_DATA,
       file: file,
       data: data
     });

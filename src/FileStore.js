@@ -1,5 +1,6 @@
 import Dispatcher from './AppDispatcher';
 import {MapStore} from 'flux/utils';
+import { LOAD_DATA, LOAD_FILE } from './ActionTypes'
 
 // the private singleton instance
 let _instance;
@@ -14,7 +15,7 @@ class FileStore extends MapStore {
     var file = action.file;
 
     switch (action.type) {
-      case 'LOAD_FILE':
+      case LOAD_FILE:
 
         switch (file.type) {
           case "text/csv":
@@ -25,7 +26,7 @@ class FileStore extends MapStore {
         }
 
         return state.set( file.name, file);
-      case 'LOAD_FILE_DATA':
+      case LOAD_DATA:
         return state.set( file.name + '-data', action.data);
       default:
         return state;
@@ -33,7 +34,7 @@ class FileStore extends MapStore {
   }
 
   getFiles() {
-    return this.getState().toArray() 
+    return this.getState().toArray()
   }
 
   getFileData(name) {
