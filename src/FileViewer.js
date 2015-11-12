@@ -1,57 +1,60 @@
 'use strict';
 
-import React, {Component}  from 'react';
+import React from 'react';
 import FileStore from './FileStore';
-import ActionCreator from './ActionCreator';
-import {tsv} from 'd3-dsv';
+import ActionCreator from './FileActionCreator';
+import {csv, tsv} from 'd3-dsv';
 import {MaxRows} from './Constants';
 import {Table, Column} from 'fixed-data-table';
 import styles from './app.css';
 
-export default class FileViewer extends Component {
+var FileViewer;
 
-  constructor(props) {
-    super(props);
-    this.state = {
+export default FileViewer = React.createClass({
+
+  getInitialState: function() {
+    return {
       files: [],
-      mode: 1
-    }
-    this.onStoreChanged = this.onStoreChanged.bind(this);
-    this.handleClickChangeMode = this.handleClickChangeMode.bind(this);
-  }
+      mode: 0
+    };
+  },
 
-  componentDidMount() {
-    FileStore.addListener( this.onStoreChanged );
-  }
+  componentDidMount: function() {
+    this.subscription = FileStore.addListener( this.onStoreChanged );
+  },
 
-  componentWillUnmount() {
-    FileStore.removeListener( this.onStoreChanged );
-  }
+  componentWillUnmount: function() {
+    this.subscription.remove();
+  },
 
   onStoreChanged() {
     this.setState({
-      files: FileStore.getFiles()
+      files: Object.keys(FileStore.getState().toJS())
     })
-  }
+  },
 
-
-
-  handleClickChangeMode() {
+  handleClickChangeMode: function() {
     this.setState( { mode: this.state.mode === 0 ? 1 : 0 } );
-  }
+  },
 
-  render() {
+  render: function() {
 
     var self = this;
+    var storeState = FileStore.getState();
 
-    function _d(n) {
-      return (FileStore.getFileData(n) || []);
+    function getFileData(file) {
+      return (storeState.getIn([file, 'content']) || []);
     }
 
     function makeTable(file) {
+      var filedata = csv.parse(getFileData(file));
 
-      if (self.state.mode === 0) {
-        return <pre>{tsv.format(_d(file.name))}</pre>;
+      if (filedata.length === 0) {
+        return <div>No data for {file}</div>;
+      }
+
+      if (self.state.mode === 1) {
+        return <pre>{tsv.format(filedata)}</pre>;
       }
 
       return (
@@ -59,9 +62,9 @@ export default class FileViewer extends Component {
                headerHeight={50}
                width="1024"
                height={400}
-               rowsCount={MaxRows < FileStore.getFileData(file.name).length ? MaxRows : FileStore.getFileData(file.name).length }
-               rowGetter={ (rowIndex) => _d(file.name)[rowIndex] }>
-          { Object.keys(_d(file.name)[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) }
+               rowsCount={MaxRows < filedata.length ? MaxRows : filedata.length }
+               rowGetter={ (rowIndex) => filedata[rowIndex] }>
+          { Object.keys(filedata[0]).map( (n, i) => <Column label={n} width={100} dataKey={n} /> ) }
         </Table>
       );
     }
@@ -71,15 +74,15 @@ export default class FileViewer extends Component {
         <label>
           <input onChange={this.handleClickChangeMode} type="checkbox" />Show Text
         </label>
-        {this.state.files.filter((d) => d.name).map((file) =>
-          <div key={file.name}>
-           <h2>{file.name}</h2>
+        {this.state.files.map((file) =>
+          <div key={file}>
+           <h2>{file}</h2>
             <span>
-              { _d(file.name) && _d(file.name).length > 0 ? makeTable(file) : 'Loading'  }
+              { makeTable(file)  }
             </span>
           </div>)
         }
       </div>
     );
   }
-}
+});

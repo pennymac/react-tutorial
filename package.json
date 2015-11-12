@@ -35,6 +35,8 @@
     "d3-dsv": "^0.1.5",
     "fixed-data-table": "^0.5.0",
     "flux": "^2.0.3",
+    "fluxury": "^0.2.8",
+    "immutable": "^3.7.5",
     "keymirror": "^0.1.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",

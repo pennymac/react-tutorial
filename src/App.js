@@ -2,21 +2,19 @@ import React, { Component } from 'react';
 import FileViewer from './FileViewer';
 import Dropzone from 'react-dropzone';
 import styles from './app.css';
-import ActionCreator from './ActionCreator';
+import ActionCreator from './FileActionCreator';
 
 export class App extends Component {
 
   onDrop(files) {
     files.forEach((file) => {
+
+      if( file.type !== 'text/csv') {
+        alert("Only files with 'csv' extension are supported.")
+        return;
+      }
+
       ActionCreator.loadFile(file);
-
-      var r = new FileReader();
-
-      r.onload = function(e) {
-        ActionCreator.loadFileData( file, e.target.result);
-      };
-
-      r.readAsText(file);
     });
   }
 

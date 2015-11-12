@@ -1,38 +1,19 @@
-import Dispatcher from './AppDispatcher';
-import {MapStore} from 'flux/utils';
-import { LOAD_FILE_DATA, LOAD_FILE } from './ActionTypes'
-import {csv} from 'd3-dsv';
+import Fluxury from 'fluxury';
+import Immutable from 'immutable';
+import { LOAD_FILE, LOAD_FILE_DATA } from './FileActions';
 
-class FileStore extends MapStore {
+var FileStore;
 
-  constructor() {
-    super(Dispatcher);
-  }
-
-  reduce(state, action) {
-    var file = action.file;
-
+export default FileStore = Fluxury.createStore(
+  'FileStore',
+  Immutable.Map(),
+  function (state, action) {
     switch (action.type) {
       case LOAD_FILE:
-      return state.set( file.name, file);
+      return state.set( action.data.name, Immutable.Map({ name: action.data.name }) );
       case LOAD_FILE_DATA:
-      switch (file.type) {
-        case 'text/csv':
-        return state.set( file.name + '-data', csv.parse(action.data) );
-        default:
-        return state.set( file.name + '-data', action.data);
-      }
+      return state.setIn( [action.data.file.name, 'content'], action.data.content );
+      default:
+      return state;
     }
-  }
-
-  getFiles() {
-    return this.getState().toArray()
-  }
-
-  getFileData(name) {
-    return this.getState().get( name + '-data');
-  }
-
-}
-
-export default new FileStore()
+  });
