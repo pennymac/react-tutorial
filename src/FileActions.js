@@ -1,6 +1,6 @@
-import Fluxury from 'fluxury';
+import { createActions } from 'fluxury';
 
-export default Fluxury.createActions(
+export default createActions(
   'LOAD_FILE',
   'LOAD_FILE_DATA'
 )
