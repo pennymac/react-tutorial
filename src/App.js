@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import FileViewer from './FileViewer';
 import Dropzone from 'react-dropzone';
 import styles from './app.css';
-import ActionCreator from './FileActionCreator';
+import { LOAD_FILE_DATA, LOAD_FILE } from './FileActions'
+import { dispatch } from 'fluxury';
 
 var App;
 
@@ -16,7 +17,19 @@ export default App = React.createClass( {
         return;
       }
 
-      ActionCreator.loadFile(file);
+      dispatch(LOAD_FILE, file);
+
+      var r = new FileReader();
+
+      r.onload = function(e) {
+        dispatch(LOAD_FILE_DATA, {
+          file: file,
+          content: e.target.result
+        });
+      };
+
+      r.readAsText(file);
+
     });
   },
 

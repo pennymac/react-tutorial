@@ -2,7 +2,6 @@
 
 import React from 'react';
 import FileStore from './FileStore';
-import ActionCreator from './FileActionCreator';
 import {csv, tsv} from 'd3-dsv';
 import {MaxRows} from './Constants';
 import {Table, Column} from 'fixed-data-table';
@@ -40,7 +39,6 @@ export default FileViewer = React.createClass({
   render: function() {
 
     var self = this;
-    var storeState = FileStore.getState();
 
     function getFileData(fileName) {
       return FileStore.queries.getFileData(fileName);
