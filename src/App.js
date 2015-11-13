@@ -4,9 +4,11 @@ import Dropzone from 'react-dropzone';
 import styles from './app.css';
 import ActionCreator from './FileActionCreator';
 
-export class App extends Component {
+var App;
 
-  onDrop(files) {
+export default App = React.createClass( {
+
+  onDrop: function(files) {
     files.forEach((file) => {
 
       if( file.type !== 'text/csv') {
@@ -16,9 +18,9 @@ export class App extends Component {
 
       ActionCreator.loadFile(file);
     });
-  }
+  },
 
-  render() {
+  render: function() {
     return (
       <div>
         <h1> File Viewer</h1>
@@ -30,4 +32,4 @@ export class App extends Component {
       </div>
     );
   }
-}
+} );

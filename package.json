@@ -1,6 +1,6 @@
 {
   "name": "react-csv-file-viewer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A simple csv file viewer written with React/Flux",
   "scripts": {
     "clean": "rimraf dist",
