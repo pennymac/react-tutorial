@@ -1,13 +1,16 @@
-# React Tutorial
-
-## Usage
-
-Run the command ```gulp``` from the project root folder. Navigate to ```localhost:3000```.
-
-You can then drop a CSV file and show the contents of the file populate in the table.
+# CSV File Viewer built with React/Flux
 
 ## Overview
 
-This demo is meant to cover the main architectural components of React.
+A simple CSV file viewer built on the React/Flux stack.
 
-![React Architecture](https://raw.githubusercontent.com/facebook/flux/master/docs/img/flux-diagram-white-background.png)
+![Flux Architecture](https://raw.githubusercontent.com/facebook/flux/master/docs/img/flux-diagram-white-background.png)
+
+## Install
+
+```sh
+git clone https://github.com/petermoresi/react-csv-file-viewer.git
+npm install
+npm start
+open http://localhost:3000
+```

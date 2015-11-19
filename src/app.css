@@ -1,0 +1,57 @@
+.main {
+  font-family: sans-serif;
+}
+
+.fullScreenTable td, .fullScreenTable th {
+    border: 1px solid green;
+}
+
+.fullScreenTable th {
+    background-color: green;
+    color: white;
+}
+
+.fullScreenTable {
+  background-color: white;
+}
+
+.dropzone {
+  border: 1px #CCC dotted;
+  text-align: center;
+  width: 400px;
+  left: 25%;
+  padding: 5%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+@media (max-width: 1200px) {
+  .dropZone {
+    position: absolute;
+    border: 1px #CCC dotted;
+    text-align: center;
+    width: 70%;
+    left: 10%;
+    padding: 5%;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .dropZone {
+    position: absolute;
+    border: 1px #CCC dotted;
+    text-align: center;
+    width: 80%;
+    left: 5%;
+    padding: 5%;
+  }
+
+}
