@@ -28,7 +28,7 @@ export default FileViewer = React.createClass({
 
   onStoreChanged() {
     this.setState({
-      files: FileStore.queries.getFiles()
+      files: FileStore.getFiles()
     })
   },
 
@@ -41,7 +41,7 @@ export default FileViewer = React.createClass({
     var self = this;
 
     function getFileData(fileName) {
-      return FileStore.queries.getFileData(fileName);
+      return FileStore.getFileData(fileName);
     }
 
     function makeTable(file) {
