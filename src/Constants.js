@@ -1,1 +1,1 @@
-export let MaxRows = 500000 
+export const MaxRows = 500000 
